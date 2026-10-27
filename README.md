@@ -63,6 +63,8 @@ The demo seed includes a sample pending cross-bureau relationship and notificati
 
 ### Search, dashboards, and reports
 
+For semantic search, results are ranked by cosine similarity. Results below `SEARCH_SIMILARITY_THRESHOLD` are omitted, then the remaining matches are capped by `SEMANTIC_TOP_K`. Tune this minimum for the selected embedding model; the default is a starting point, not a universal relevance score.
+
 The complaint search page offers:
 
 - **Semantic mode:** Uses an embedding endpoint and locally computes cosine similarity. If embeddings are unavailable, it returns keyword matches and labels the fallback.
@@ -130,6 +132,7 @@ Copy `.env.example` to `.env` if needed. AI settings can be left blank; the app 
 | `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL` | Optional OpenAI-compatible chat endpoint, bearer key, and model. The API root is used; the app appends `/chat/completions`. |
 | `AI_TIMEOUT_MS` | Timeout for embedding and LLM requests; defaults to `12000` ms |
 | `SEMANTIC_TOP_K` | Maximum candidates returned by vector retrieval; defaults to `8` |
+| `SEARCH_SIMILARITY_THRESHOLD` | Minimum cosine similarity for semantic search results; defaults to `0.35` |
 | `SIMILARITY_THRESHOLD` | Minimum overlap candidate score to create a suggestion; defaults to `0.35` |
 
 For example, with OpenAI-compatible services, the endpoint root is commonly `https://api.openai.com/v1`; use a model supported by your account. Keep API keys in `.env`, do not commit them, and remember that complaint text is sent to the configured provider for embedding or comparison. The prototype is intended for synthetic demo records, not real complaint data.
